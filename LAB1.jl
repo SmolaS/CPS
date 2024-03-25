@@ -1,16 +1,20 @@
-## Problem 1.1
-function silnia_rek(n)
+## Problem 1.1 :Zaimplementuj funkcję ℕ → ℕ, która zwróci wartość funkcji silnia 𝑛! ∈ ℕ, dla liczny naturalne 𝑛 ∈ ℕ.
+## Obliczenia zaimplementuj rekurencyjnie.
+
+function sirek(n)
     if n == 0
         return 1
-    end
+    end 
 
     return n * silnia_rek(n-1)
 end
 
-println(silnia_rek(5))
+@show(sirek(5))
 
-## Problem 1.2
-function silnia_it(n)
+## Problem 1.2 : Zaimplementuj funkcję ℕ → ℕ, która zwróci wartość funkcji silnia 𝑛! ∈ ℕ dla  liczny naturalne 𝑛 ∈ ℕ.
+## Obliczenia zaimplementuj iteracyjnie.
+
+function siter(n)
     wynik = 1
     for i in 2:n
         wynik *= i
@@ -19,18 +23,20 @@ function silnia_it(n)
     return wynik
 end
 
-println(silnia_it(5))
+@show(siter(5))
 
-## Problem 1.3
-function isEven(n)
+## Problem 1.3 Zaimplementuj funkcję ℕ → {0, 1}, która zwróci logiczną wartość prawda jeżeli liczba 𝑁 ∈ ℕ jest parzysta.
+
+function parzysta(n)
     return !Bool(n%2)
 end
 
-println(isEven(5))
-println(isEven(4))
+@show(parzysta(5))
+@show(parzysta(4))
 
-## Problem 1.4
-function isPrime(n)
+## Problem 1.4  Zaimplementuj funkcję ℕ → {0, 1}, która zwróci logiczną wartość prawda jeżeli 𝑁 ∈ ℕ jest liczbą pierwszą.
+
+function pierwsza(n)
     for i in 2:sqrt(n)
         if n % i == 0
             return false
@@ -39,18 +45,22 @@ function isPrime(n)
     return true
 end
 
-println(isPrime(13))
-println(isPrime(21))
+@show(pierwsza(13))
+@show(pierwsza21))
 
-## Problem 1.5
-function reverse_array(s::Vector)
+## Problem 1.5 : Zaimplementuj funkcję 𝑆 → 𝑆, która zwróci wejściowy ciąg znakowy 𝑠 ∈ 𝑆 w odwrotnej kolejności.
+## Symbol 𝑆 oznacza zbiór wszystkich ciągów znakowych.
+
+function odwrotna(s::Vector)
     return reverse(s)
 end
 
-println(reverse_array([1,2,3,4]))
+@show(odwrotna([1,2,3,4]))
 
-## Problem 1.6
-function isPalindrome(s::Vector)
+## Problem 1.6  Zaimplementuj funkcję 𝑆 → {0, 1}, która zwróci logiczną wartość prawda jeżeli ciąg znaków 𝑎 ∈ 𝑆 jest palindromem. 
+##Symbol 𝑆 oznacza zbiór wszystkich ciągów znakowych.
+
+function palindrom(s::Vector)
     if s == reverse(s)
         return true
     end
@@ -58,20 +68,21 @@ function isPalindrome(s::Vector)
     return false
 end
 
-println(isPalindrome([1,3,1]))
-println(isPalindrome([1,3,2]))
+@show(palindrom([1,3,1]))
+@show(palindrom([1,3,2]))
 
-## Problem 1.7
-function sierpinski_area(n)
+## Problem 1.7 Zaimplementuj funkcję ℕ → ℝ, która zwróci pole powierzchni trójkąta Sierpińskiego rzędu 𝑁 ∈ ℕ. 
+## Załóż że pole powierzchni trójkąta Sierpińskiego rzędu 0 wynosi 1.0 i maleje wraz ze zwiększającym się rzędem.
+
+function sierpinski(n)
     return (3/4)^n
 end
 
-for i in 0:10
-    println("Rząd: ", i, " Pole = ", sierpinski_area(i))
-end
+@shiw(sierpinski(3))
 
-## Problem 1.8
-function newton_raphson(liczba)
+## Problem 1.8 Zaimplementuj funkcję ℝ → ℝ, która obliczy √𝑎 dla 𝑎 ≥ 0 z wykorzystaniem metody Newtona.
+
+function newto(liczba)
     dokl = 0.00001
     x = liczba/2
     while abs(x - liczba/x) > dokl
@@ -81,33 +92,21 @@ function newton_raphson(liczba)
 end
 
 for i in 1:10
-    println("sqrt(",i,") = ",newton_raphson(i))
+    @show("sqrt(",i,") = ",newton(i))
 end
 
-## Problem 1.9
+## Problem 1.9 Dany jest rekurencyjny ciąg 𝑧𝑛+1 = 𝑧𝑛^2 + 𝑝, gdzie 𝑧𝑛, 𝑝 ∈ ℂ oraz 𝑧0 = 0. Zbadaj i określ maksymalną K-zbieżność ciągu 𝑧𝑛 dla punktów 𝑝 takich że,
+## −1 < ℜ(𝑝) < 2, −1 < ℑ(𝑝) < 1. Zbiór K-zbieżnych punktów 𝑝 ciągu 𝑧𝑛 zdefiniowany jest jako: 𝑀𝐾 = {𝑝 ∈ ℂ : ∀𝑛<𝐾|𝑧𝑛| < 2}.
+## Wyrysuj płaszczyznę zespoloną, gdzie dla każdego zbadanego punktu 𝑝, przypisz maksymalneK, dla którego ciąg jest K-zbieżny.
 #TODO
-MAX_ITER = 255
-
-function mandelbrot(c)
-    z = 0
-    n = 0
-    while (abs(z) < 2) && (n < MAX_ITER)
-        z = z^2 + c
-        n += 1
-    end
-
-    return n
-end
-
-for r = -1:0.1:2, i = -1:0.1:1
-    c = r + i * im
-    println(c," ",mandelbrot(c))
-end
 
 
 
+## Problem 1.10 Liczbę pierwszą nazwiemy cykliczną, jeżeli wszystkie cykliczne przesunięcia tejliczby są też liczba pierwszą. 
+## Cykliczne przesunięcia liczby pierwszej 197 to 971 i 719. 
+## Istnieje trzynaście cyklicznych liczb pierwszych poniżej stu: 2, 3, 5, 7, 11, 13, 17, 31, 37, 71, 73, 79, 97.
+## Ile takich liczb jest poniżej miliona?
 
-## Problem 1.10
 function isPrime(n)
     for i in 2:sqrt(n)
         if n % i == 0
@@ -146,6 +145,6 @@ for i in 2:1_000_000
     end
 end
 
-println(count)
+@show(count)
 
 ##
