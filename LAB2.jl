@@ -1,6 +1,10 @@
 using CairoMakie
 using Random
-## Problem 2.1
+
+## Problem 2.1 Oblicz wektor 𝑥 ∈ ℝ^256, zawierający kolejne próbki pobrane z szybkością 1000 próbek na sekundę 
+## ciągłego rzeczywsitego syganłu harmonicznego o amplitudzie 2, częstotliwości oscylacji 25 Hz, oraz przesunięciu fazowym 𝜋/4. 
+## Pierwsza próbka 𝑥1 powinna być pobrana w momencie 0.25 s
+
 A = 2 # Amplituda 2
 f = 25 # Częstotliwość 25 Hz
 n = 1000 # Szybkość 1000 próbek na sekundę
@@ -13,41 +17,30 @@ y = A*sin.(2*pi*f*t .+ fi) # Sygnał y
 # Wykres
 lines(t, y)
 
-## Problem 2.2
-function KOT(N)
-A = 0.25 # Amplituda 0.25
-f = pi/2 # Częstotliwość pi/2 Hz
-n = 2048 # Szybkość 1000 próbek na sekundę
-fi = pi # Przesunięcie fazowe pi
-t1 = 5 # Początek próbkowania 5s
-t2 = 10 # Koniec próbkowania
+## Problem 2.2 Oblicz wektor 𝑥 ∈ ℂ 𝑁 , zawierający kolejne próbki pobrane z szybkością 2048 próbek na sekundę 
+## ciągłego zespolonego syganłu harmonicznego o amplitudzie 0.25, częstotliwości oscylacji 𝜋/2 Hz, oraz przesunięciu fazowym 𝜋.\
+## Pierwsza próbka 𝑥1  powinna być pobrana w momencie 5.0 s, natomiast ostatnia próbka 𝑥𝑁 powinna zostać pobrana w momencie 10.0 s.
 
-t2 = t1+((N-1)/n)
-t = range(t1, t2, N) # Zakres x
-y = A*sin.(2*pi*f*t .+ fi) # Sygnał y
-end
+function K(N)
+    
+A = 0.25 # Amplituda
+f = pi/2 # Częstotliwość
+n = 2048# Szybkość próbek na sekundę
+fi = pi # Przesunięcie fazowe
+t1 = 5 # Początek próbkowania
+N = # Rozmiar wektora nieznany
+t2 = 10
+
+t = range(t1, t2; length=n*(t2-t1)) # Zakres x
+y = A*exp.(im*(2*pi*f*t.+fi))# Sygnał y
+
 # Wykres
-lines(t, y)
+lines(t, real(y))
+lines!(t, imag(y))
+current_figure()
 
-## Problem 2.3
 
-x = 0:1:1000
-x = vec(x)
-y = 0.5*randn(Float64,(length(x)))
-y = vec(y)
-f = Figure()
-ax = Axis(f[1,1], aspect=1)
-lines!(ax,x,y)
-f
-z = sum(y.^2)/length(x)
-
-## Problem 2.4
-
-## Problem 2.5
-
-## Problem 2.6
-
-## Problem 2.7
+## Problem 2.7 Zaimplementuj funkcję cw_literka_M: ℝ × ℝ → ℝ, zwracającą impuls przypominający literę M o szerokości 𝑇 ∈ ℝ w chwili 𝑡 ∈ ℝ.
 
 function cw_literka_M(T::Real, t::Real)
     if abs(t) < T/2
@@ -69,44 +62,25 @@ using CairoMakie
 lines(t,x)
 litera_M(1,1,0.1)
 
-## Problem 2.8
 
-## Problem 2.9
+## Problem 2.10 Zaimplementuj funkcję sawtooth_wave: ℝ → ℝ, zwracającą wartości okresowego sygnału fali piłokształtnej z opadającym zboczem w chwili 𝑡 ∈ ℝ. 
+## Sygnał powinien posiadać następujące parametry: amplituda 1, okres 1 sekunda, składowa stała 0, sawtooth_wave(0) = 0,
+## oraz 𝜕sawtooth_wave/ 𝜕𝑡| 𝑡=0 = −1.
 
-## Problem 2.10
+## Problem 2.11 : Zaimplementuj funkcję triangular_wave: ℝ → ℝ, zwracającą wartości okresowego sygnału fali trójkątnej w chwili 𝑡 ∈ ℝ.
+## Sygnał powinien posiadać następujące parametry: amplituda 1, okres 1 sekunda, składowa stała 0, triangular_wave(0) = 0, oraz
+## 𝜕 triangular_wave/ 𝜕𝑡| 𝑡=0 = 2
 
-## Problem 2.11
 
-## Problem 2.12
+## Problem 2.14 Zaimplementuj funkcję impulse_reapeter: 𝐹 × ℝ × ℝ → 𝐹, która zwróci funkcję 𝑓 ∈ 𝐹, gdzie 𝐹 oznacza zbiór funkcji ℝ → ℝ. Funkcja 𝑓 powinna zwracać wartość sygnału 𝑓(𝑡) ∈ ℝ w momencie 𝑡 ∈ ℝ. 
+##  Sygnał 𝑓(𝑡) jest sygnałem okresowym o okresie 𝑇 = 𝑡2 − 𝑡1, gdzie 𝑡1,𝑡2 ∈ ℝ oraz 𝑡1 < 𝑡2. Funkcja 𝑓 jest związany z funkcją wymuszającą 𝑔 ∈ 𝐹 poprzez warunek t2∫t1(𝑓(𝑡) − 𝑔(𝑡))^2 dt = 0.
 
-## Problem 2.13
+## Problem 2.15 Zaimplementuj funkcję ramp_wave_bl: ℝ × ℝ^+ × ℝ^+ × ℝ^+ → ℝ. Funkcja powinna zwracać wartość sygnału fali piłokształtnej z narastającmym zboczem w chwili 𝑡 ∈ ℝ(podobnie jak w Problem 2.9).
+## Dodatkowo zwracany sygnał powinien mieć amplitudę 𝐴 ∈ ℝ$+, okres trwający 𝑇 ∈ ℝ+ sekund oraz pasmo tego sygnału powinno być ograniczone od dołu i góry przez częstotliwości |𝐵| ∈ ℝ^+.
 
-## Problem 2.14
 
-## Problem 2.15
-
-## Problem 2.16
-
-## Problem 2.17
-
-## Problem 2.18
-
-## Problem 2.19
-
-## Problem 2.20
-
-## Problem 2.21
-
-## Problem 2.22
-
-## Problem 2.23
-
-## Problem 2.24
-
-## Problem 2.25
-
-## Problem 2.26
-
-## Problem 2.27
-
-## Problem 2.28
+## Problem 2.22 Zaimplementuj funkcję kronecker : ℤ → ℝ, zwracającą wartość dyskretnego impulsu jednostkowego (delta Kroneckera) dla 𝑛 ∈ ℤ.
+ 
+## Problem 2.23 Zaimplementuj funkcję heaviside : ℤ → ℝ, zwracającą wartość dyskretnego skoku jednostkowego (funkcja skokowa Heaviside’a) dla 𝑛 ∈ ℤ
+    
+## Problem 2.26 Zaimplementuj funkcję hanning : ℕ+ → ℝ^𝑁 , zwracającą wektor 𝑥 ∈ ℝ^𝑁 z próbkami dyskretnego okna Hanninga o długości 𝑁 > 0.
