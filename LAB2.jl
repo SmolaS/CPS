@@ -97,6 +97,21 @@ end
 signal = white_noise(1000, 0.25)
 var(signal)
 
+#zpc
+'function noise(power, n)
+    matrix=Float64[]
+    for i in 1:1:n
+        push!(matrix, (sqrt(power)*cos(i)-sqrt(power)*sin(i)))
+    end 
+return matrix
+end
+using CairoMakie
+
+f = Figure()
+lines(range(1,100,1000), sin.(range(1,100,1000).+noise(0.25,1000)))
+f
+@show noise(0.25, 1000)'
+    
 ## Problem 2.4
 function complex_white_noise(n, power)
     noise = sqrt(power) * (randn(ComplexF64, n))
@@ -158,7 +173,29 @@ end
 x = 0:0.001:2
 plot(x, sawtooth_wave.(x))
 #####################################
+    #zpc
+'function sawtooth_wave(offset, time)
+    x=Float64[]
+    y=Float64[]
+    push!(x,offset)
+    push!(y,0)
+    for i in 1:1:time*100
+            push!(x, i/100+offset)
+        end
+    for i in 1:1:time
+        for k in 1:1:100
+            push!(y, k*(-1)/100+0.5)
+        end
+    end
+    return [x,y]
+end
 
+using CairoMakie
+f = Figure()
+matrix = sawtooth_wave(2, 10)
+lines(matrix[1], matrix[2])
+@show matrix '
+    
 ## Problem 2.11 : Zaimplementuj funkcję triangular_wave: ℝ → ℝ, zwracającą wartości okresowego sygnału fali trójkątnej w chwili 𝑡 ∈ ℝ.
 ## Sygnał powinien posiadać następujące parametry: amplituda 1, okres 1 sekunda, składowa stała 0, triangular_wave(0) = 0, oraz
 ## 𝜕 triangular_wave/ 𝜕𝑡| 𝑡=0 = 2
@@ -170,7 +207,34 @@ end
 
 x = 0:0.001:2
 plot(x, triangle_wave.(x))
+##zpc
+    
+'function triangular_wave(offset, time)
+    x=Float64[]
+    y=Float64[]
+    push!(x,offset)
+    push!(y,0)
+    for i in 1:1:time*400+100
+            push!(x, i/100+offset)
+        end
+    for k in 1:1:100
+        push!(y, k/100)
+    end
+    for i in 1:1:time
+        for k in 1:1:200
+            push!(y, k/100*(-1)+1)
+        end
+        for k in 1:1:200
+            push!(y, k/100-1)
+        end
+    end
+    return [x,y]
+end
 
+using CairoMakie
+f = Figure()
+matrix = triangular_wave(2, 10)
+lines(matrix[1], matrix[2])
 ## problem 2.12
 function square_wave(x)
     ifelse(rem(x, 1) < 0.5, 1, -1)
@@ -179,7 +243,7 @@ end
 trianglewave1(x)
 
 x = 0:0.001:2
-plot(x, square_wave.(x))
+plot(x, square_wave.(x))'
 
 ## problem 2.13
 function pulse_wave(x, ρ)
@@ -198,7 +262,173 @@ plot(x, pulse_wave.(x, 0.2))
 
 
 ## Problem 2.22 Zaimplementuj funkcję kronecker : ℤ → ℝ, zwracającą wartość dyskretnego impulsu jednostkowego (delta Kroneckera) dla 𝑛 ∈ ℤ.
- 
-## Problem 2.23 Zaimplementuj funkcję heaviside : ℤ → ℝ, zwracającą wartość dyskretnego skoku jednostkowego (funkcja skokowa Heaviside’a) dla 𝑛 ∈ ℤ
+
+    #zpc
+    function kronecker(n)
+    x=Float64[]
+    y=Float64[]
+    if (n < 0)
+        push!(x,2*n)
+        push!(y,0)
+        for i in n*2:1:0
+            if (i == n)
+                push!(x, i-0.0000001)
+                push!(x, i)
+                push!(x, i+0.0000001)
+            else
+                push!(x, i)
+            end
+        end
+        for i in 2*n:1:0
+            if (i == n)
+                push!(y, 0)
+                push!(y, 1)
+                push!(y, 0)
+            else
+                push!(y, 0)
+            end
+        end
+    end
+    if (n > 0)
+        push!(x,0)
+        push!(y,0)
+        for i in 0:1:2*n
+            if (i == n)
+                push!(x, i-0.000001)
+                push!(x, i)
+                push!(x, i+0.000001)
+            else
+                push!(x, i)
+            end
+        end
+        for i in 0:1:2*n
+            if (i == n)
+                push!(y, 0)
+                push!(y, 1)
+                push!(y, 0)
+            else
+                push!(y, 0)
+            end
+        end
+    end
+    if (n == 0)
+        push!(x,-n)
+        push!(y,0)
+        for i in 0:1:10
+            if (i-5 == 0)
+                push!(x, i-5-0.00001)
+                push!(x, i-5)
+                push!(x, i-5+0.00001)
+            else
+                push!(x, i-5)
+            end
+        end
+        for i in 0:1:10
+            if (i-5 == 0)
+                push!(y, 0)
+                push!(y, 1)
+                push!(y, 0)
+            else
+                push!(y, 0)
+            end
+        end
+    end
+    return [x,y]
+end
+
+using CairoMakie
+f = Figure()
+matrix = kronecker(10)
+scatterlines(matrix[1], matrix[2])
     
+## Problem 2.23 Zaimplementuj funkcję heaviside : ℤ → ℝ, zwracającą wartość dyskretnego skoku jednostkowego (funkcja skokowa Heaviside’a) dla 𝑛 ∈ 
+    #zpc
+    function heaviside(n)
+    x=Float64[]
+    y=Float64[]
+    if (n < 0)
+        push!(x,2*n)
+        push!(y,0)
+        for i in n*2+1:1:0
+            if (i == n)
+                push!(x, i-0.000001)
+                push!(x, i)
+            else
+                push!(x, i)
+            end
+        end
+        for i in 2*n:1:0
+            if (i >= n)
+                push!(y, 1)
+            else
+                push!(y, 0)
+            end
+        end
+    end
+    if (n > 0)
+        push!(x,0)
+        push!(y,0)
+        for i in 1:1:2*n
+            if (i == n)
+                push!(x, i-0.000001)
+                push!(x, i)
+            else
+                push!(x, i)
+            end
+        end
+        for i in 1:1:2*n+1
+            if (i > n)
+                push!(y, 1)
+            else
+                push!(y, 0)
+            end
+        end
+    end
+    if (n == 0)
+        push!(x,-5)
+        push!(y,0)
+        for i in -5:1:5
+            if (i == 0)
+                push!(x, i-0.000001)
+                push!(x, i)
+                push!(x, i+0.000001)
+            else
+                push!(x, i)
+            end
+        end
+        for i in -5:1:7
+            if (i > n)
+                push!(y, 1)
+            else
+                push!(y, 0)
+            end
+        end
+    end
+    return [x,y]
+end
+
+using CairoMakie
+f = Figure()
+matrix = heaviside(0)
+scatterlines(matrix[1], matrix[2])
+@show matrix[1]
+@show matrix[2]
+
 ## Problem 2.26 Zaimplementuj funkcję hanning : ℕ+ → ℝ^𝑁 , zwracającą wektor 𝑥 ∈ ℝ^𝑁 z próbkami dyskretnego okna Hanninga o długości 𝑁 > 0.
+
+#zpc    
+using CairoMakie
+
+function hanning(N)
+    if N <= 0
+        error("N must be greater than zero")
+    end
+    
+    n = collect(0:N-1)
+    return 0.5 .- 0.5 .* cos.(2π * n / (N - 1))
+end
+
+N = 100
+x = hanning(N)
+lines(1:N, x)
+
