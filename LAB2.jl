@@ -1,6 +1,10 @@
-using CairoMakie
-using Random
-
+begin
+    using Plots
+    using Statistics
+    using LinearAlgebra
+    using Random
+    using Waveforms
+end
 ## Problem 2.1 Oblicz wektor 𝑥 ∈ ℝ^256, zawierający kolejne próbki pobrane z szybkością 1000 próbek na sekundę 
 ## ciągłego rzeczywsitego syganłu harmonicznego o amplitudzie 2, częstotliwości oscylacji 25 Hz, oraz przesunięciu fazowym 𝜋/4. 
 ## Pierwsza próbka 𝑥1 powinna być pobrana w momencie 0.25 s
@@ -16,6 +20,26 @@ t = range(t1, t2, N) # Zakres x
 y = A*sin.(2*pi*f*t .+ fi) # Sygnał y
 # Wykres
 lines(t, y)
+
+#MCH---------------------------------------------
+'sampling_rate = 1000
+sample_step = 1 / sampling_rate
+first_sample_time = 0.25
+sample_count = 256
+
+A = 2
+f₀ = 25
+ϕ = π / 4
+
+t = range(;
+    start=first_sample_time,
+    step=sample_step,
+    length=sample_count
+)
+signal = A * cos.(2π * f₀ * t .+ ϕ)
+
+plot(t, signal)'
+
 
 ## Problem 2.2 Oblicz wektor 𝑥 ∈ ℂ 𝑁 , zawierający kolejne próbki pobrane z szybkością 2048 próbek na sekundę 
 ## ciągłego zespolonego syganłu harmonicznego o amplitudzie 0.25, częstotliwości oscylacji 𝜋/2 Hz, oraz przesunięciu fazowym 𝜋.\
@@ -39,6 +63,55 @@ lines(t, real(y))
 lines!(t, imag(y))
 current_figure()
 
+#MCH------------------------------------
+'sampling_rate = 2048
+sample_step = 1 / sampling_rate
+first_sample_time = 5
+last_sample_time = 10
+
+A = 0.25
+f₀ = π / 2
+ϕ = π
+
+t = range(;
+    start=first_sample_time,
+    stop=last_sample_time,
+    step=sample_step
+)
+signal = A * exp.(im * (2π * f₀ * t .+ ϕ))
+
+p1 = plot(signal)
+plot(
+    plot(t, real(signal)),
+    plot(t, imag(signal)),
+    layout=(2, 1),
+    title=["real" "imaginary"],
+    label=["re" "im"]
+)'
+#MCH################################
+## Problem 2.3
+function white_noise(n, power)
+    noise = sqrt(power) * randn(n)
+    return noise
+end
+signal = white_noise(1000, 0.25)
+var(signal)
+
+## Problem 2.4
+function complex_white_noise(n, power)
+    noise = sqrt(power) * (randn(ComplexF64, n))
+    return noise
+end
+signal = complex_white_noise(1000, 3)
+var(signal)
+
+## Problem 2.5
+function cw_rectangular(T, t)
+    impulse_value = 1 / T
+
+
+end
+######################################
 
 ## Problem 2.7 Zaimplementuj funkcję cw_literka_M: ℝ × ℝ → ℝ, zwracającą impuls przypominający literę M o szerokości 𝑇 ∈ ℝ w chwili 𝑡 ∈ ℝ.
 
@@ -62,16 +135,61 @@ using CairoMakie
 lines(t,x)
 litera_M(1,1,0.1)
 
+#MCH################################################
+## problem 2.9
+function ramp_wave(x)
+    output = 2 * rem(x, 1, RoundNearest)
+    return output
+end
 
+x = 0:0.001:2
+plot(x, ramp_wave.(x))
+###########################################################
 ## Problem 2.10 Zaimplementuj funkcję sawtooth_wave: ℝ → ℝ, zwracającą wartości okresowego sygnału fali piłokształtnej z opadającym zboczem w chwili 𝑡 ∈ ℝ. 
 ## Sygnał powinien posiadać następujące parametry: amplituda 1, okres 1 sekunda, składowa stała 0, sawtooth_wave(0) = 0,
 ## oraz 𝜕sawtooth_wave/ 𝜕𝑡| 𝑡=0 = −1.
+
+#MCH###############################
+function sawtooth_wave(x)
+    output = -2 * rem(x, 1, RoundNearest)
+    return output
+end
+
+x = 0:0.001:2
+plot(x, sawtooth_wave.(x))
+#####################################
 
 ## Problem 2.11 : Zaimplementuj funkcję triangular_wave: ℝ → ℝ, zwracającą wartości okresowego sygnału fali trójkątnej w chwili 𝑡 ∈ ℝ.
 ## Sygnał powinien posiadać następujące parametry: amplituda 1, okres 1 sekunda, składowa stała 0, triangular_wave(0) = 0, oraz
 ## 𝜕 triangular_wave/ 𝜕𝑡| 𝑡=0 = 2
 
+#MCH##########################################
+    function triangle_wave(x)
+    #FIXME: conflicting requirements
+end
 
+x = 0:0.001:2
+plot(x, triangle_wave.(x))
+
+## problem 2.12
+function square_wave(x)
+    ifelse(rem(x, 1) < 0.5, 1, -1)
+end
+
+trianglewave1(x)
+
+x = 0:0.001:2
+plot(x, square_wave.(x))
+
+## problem 2.13
+function pulse_wave(x, ρ)
+    ifelse(rem(x, 1) < ρ, 1, 0)
+end
+
+x = 0:0.001:2
+plot(x, pulse_wave.(x, 0.2))
+
+########################################################
 ## Problem 2.14 Zaimplementuj funkcję impulse_reapeter: 𝐹 × ℝ × ℝ → 𝐹, która zwróci funkcję 𝑓 ∈ 𝐹, gdzie 𝐹 oznacza zbiór funkcji ℝ → ℝ. Funkcja 𝑓 powinna zwracać wartość sygnału 𝑓(𝑡) ∈ ℝ w momencie 𝑡 ∈ ℝ. 
 ##  Sygnał 𝑓(𝑡) jest sygnałem okresowym o okresie 𝑇 = 𝑡2 − 𝑡1, gdzie 𝑡1,𝑡2 ∈ ℝ oraz 𝑡1 < 𝑡2. Funkcja 𝑓 jest związany z funkcją wymuszającą 𝑔 ∈ 𝐹 poprzez warunek t2∫t1(𝑓(𝑡) − 𝑔(𝑡))^2 dt = 0.
 
