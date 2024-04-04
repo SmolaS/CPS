@@ -31,7 +31,10 @@ function energy(x::Vector{Complex})
     """
     return sum(abs.(x).^2)
 end
+x = range(1,100,100)
+y = sin.(x)
 
+@show energy(y)
 ## Problem 3.4 Zaimplementuj funkcję power: ℂ^𝑁 → ℝ zwracającą moc dyskretnego sygnału 𝑥 ∈ ℂ^𝑁 .
 ## gpt
 
@@ -48,6 +51,10 @@ function power(x::Vector{Complex})
     return energy(x) / length(x)
 end
 
+x = range(1,100,100)
+y = sin.(x)
+
+@show power(y)
 ## Problem 3.5 Zaimplementuj funkcję rms: ℂ^𝑁 → ℝ zwracającą wartość skuteczną dyskretnego sygnału 𝑥 ∈ ℂ^𝑁 .
 ## gpt 
 
@@ -63,3 +70,7 @@ function rms(x::Vector{Complex})
     """
     return sqrt(energy(x) / length(x))
 end
+x = range(1,100,100)
+y = sin.(x)
+
+@show rms(y)
