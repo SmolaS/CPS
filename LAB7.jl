@@ -85,3 +85,38 @@
 ## częstotliwość zero), a następnie użyj demodulacji kwadraturowej do odzyskania 
 ## sygnału modulowanego.
 
+
+## Problem 7.2.8
+## Zaimplementuj funkcję stft: ℝ^𝑁 × ℝ^𝐾 × ℕ → ℂ^((⌊𝑁−𝐿/𝐾−𝐿⌋×⌊𝐾/2⌋+1)), która wykona
+## analizę sygnału 𝑥 ∈ ℝ^𝑁 z domeny czasu, z wykorzystaniem krótkoczasowej transformacji
+## Fouriera oraz okna analizującego 𝑤 ∈ ℝ^𝐾, gdzie 𝐾 ≪ 𝑁. Kolejne analizowane wycinki 
+## (ramki,segmenty) sygnału, powinny na siebie nachodzić w 𝐿 ∈ ℕ próbkach, gdzie 0 ≤ 𝐿 < 𝐾.
+## Do obliczania dyskretnej transformacji Fouriera, wykorzystacj rdft bądź rfft.
+
+
+## Problem 7.2.9
+## Wykonaj analize czasowo-częstotliwościową następujących sygnałów:
+## • epic_sax_gux.wav,
+## • fail_trombone.wav,
+## • speech0001.wav.
+##Wyświetl spektrogramy tych sygnałów oraz przeanalizuj jak zmieniają się w zależności od 
+## typu, długości okna analizującego, oraz parametru nakładania się kolejnych ramek na siebie.
+
+
+## Problem 7.2.10
+## Zaimplementuj funkcję istft: ℂ((⌊𝑁−𝐿/𝐾−𝐿⌋×⌊𝐾/2⌋+1 × ℝ^𝐾 × ℕ → ℝ^𝑁 , która wykona syntezę
+## sygnału 𝑥 ∈ ℝ^𝑁 z domeny czasu na podstawie sygnału ℂ((⌊𝑁−𝐿/𝐾−𝐿⌋×⌊𝐾/2⌋+1 z domeny
+## czasowo-częstotliwościowej, przy założeniu że oknem analizującym był sygnał 𝑤 ∈ ℝ^𝐾
+## oraz kolejne analizowane segmenty (ramki) sygnału nachodziły na siebie w 𝐿 ∈ ℕ próbkach,
+## gdzie 0 ≤𝐿 < 𝐾. Do obliczania odwrotnej dyskretnej transformacji Fouriera, 
+## wykorzystacj irdft bądź irfft.
+
+
+## Problem 7.2.11
+## Znajdź reprezentację czasowo-częstotliwościową poniższych sygnałów:
+## • epic_sax_gux.wav,
+## • fail_trombone.wav,
+## • speech0001.wav.
+## Zmodyfikuj tę reprezentację w wymiarze częstotliowści, np. nakładając charakterystykę
+## amplitudową filtru dolnoprzepustowego, a następnie znajdź sygnał w domenie czasu.
+
