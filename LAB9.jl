@@ -42,3 +42,9 @@
 ## 𝑓1 ∈ ℝ, gdzie 𝑓0 < 𝑓1, oraz liniowej charakterystyce fazowe.
 ## Do zaprojektowania filtru wykorzystaj metodę okien czasowych oraz okno
 ## prostokątne.
+
+## Problem 9.7: Zaimplementuj funkcję firwin_diff: {2𝐿 + 1 : 𝐿 ∈ ℕ} × ℝ → ℝ^(2𝐿+1), która
+## zwróci odpowiedź impulsową ℎ ∈ ℝ^(2𝐿+1) nierekursywnego filtru różniczującego rzędu 2𝐿.
+## Do zaprojektowania filtru wykorzystaj metodę okien czasowych oraz okno prostokątne.
+
+s
